@@ -1,0 +1,1477 @@
+options:
+  parameters:
+    alias: ''
+    author: ''
+    catch_exceptions: 'True'
+    comment: Probes de autocorrelacao, potencia e N_win.
+    copyright: ''
+    description: ''
+    gen_linking: dynamic
+    generate_options: qt_gui
+    generator_class_name: PythonQtGuiGenerator
+    generator_module: gnuradio.grc.workflows.python_qt_gui
+    hier_block_src_path: '.:'
+    id: master_v1
+    max_nouts: '0'
+    output_language: python
+    qt_qss_theme: ''
+    realtime_scheduling: ''
+    run: 'True'
+    run_command: '{python} -u {filename}'
+    thread_safe_setters: ''
+    title: Master v1 - base funcional + instrumentacao da Semana 1
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 8
+    - 8
+    rotation: 0
+    state: enabled
+blocks:
+- name: samp_rate
+  id: variable
+  parameters:
+    value: '20000000'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 380
+    - 825
+    rotation: 0
+    state: enabled
+- name: freq
+  id: variable
+  parameters:
+    value: 2.437e9
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 700
+    - 825
+    rotation: 0
+    state: enabled
+- name: bw
+  id: variable
+  parameters:
+    value: 20e6
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 1020
+    - 825
+    rotation: 0
+    state: enabled
+- name: nwin
+  id: variable_qtgui_range
+  parameters:
+    label: N_win (aplicar = reiniciar)
+    rangeType: int
+    value: '48'
+    start: '16'
+    stop: '128'
+    step: '8'
+    widget: counter_slider
+    orient: QtCore.Qt.Horizontal
+    min_len: '200'
+    gui_hint: 0,0,1,1
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 1340
+    - 825
+    rotation: 0
+    state: enabled
+- name: nwin_note
+  id: note
+  parameters:
+    note: '"Janela de autocorrelacao (eq. 1) e da potencia (eq. 2, N_win+16)"'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 380
+    - 1650
+    rotation: 0
+    state: enabled
+- name: noise
+  id: variable_qtgui_range
+  parameters:
+    label: Ruido AWGN (V)
+    rangeType: float
+    value: '0.05'
+    start: '0.0'
+    stop: '0.6'
+    step: '0.01'
+    widget: counter_slider
+    orient: QtCore.Qt.Horizontal
+    min_len: '200'
+    gui_hint: 0,1,1,1
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 1340
+    - 1080
+    rotation: 0
+    state: enabled
+- name: gain
+  id: variable_qtgui_range
+  parameters:
+    label: Ganho RX
+    rangeType: float
+    value: '1.0'
+    start: '0.002'
+    stop: '1.0'
+    step: '0.002'
+    widget: counter_slider
+    orient: QtCore.Qt.Horizontal
+    min_len: '200'
+    gui_hint: 0,2,1,1
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 1020
+    - 1080
+    rotation: 0
+    state: enabled
+- name: gain_note
+  id: note
+  parameters:
+    note: '"Aplicado ANTES do ruido: emula o LNA (ganho baixo = SNR baixa)"'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 780
+    - 1650
+    rotation: 0
+    state: enabled
+- name: payload_len
+  id: variable_qtgui_range
+  parameters:
+    label: Payload (bytes)
+    rangeType: int
+    value: '10'
+    start: '0'
+    stop: '200'
+    step: '1'
+    widget: counter_slider
+    orient: QtCore.Qt.Horizontal
+    min_len: '200'
+    gui_hint: 0,3,1,1
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 700
+    - 1080
+    rotation: 0
+    state: enabled
+- name: interval
+  id: variable_qtgui_range
+  parameters:
+    label: Intervalo entre frames (ms)
+    rangeType: int
+    value: '100'
+    start: '20'
+    stop: '1000'
+    step: '10'
+    widget: counter_slider
+    orient: QtCore.Qt.Horizontal
+    min_len: '200'
+    gui_hint: 0,4,1,1
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 380
+    - 1080
+    rotation: 0
+    state: enabled
+- name: pad_tail
+  id: variable_qtgui_range
+  parameters:
+    label: Silencio entre frames (amostras)
+    rangeType: int
+    value: '4000'
+    start: '0'
+    stop: '20000'
+    step: '100'
+    widget: counter_slider
+    orient: QtCore.Qt.Horizontal
+    min_len: '200'
+    gui_hint: 1,0,1,1
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 380
+    - 1335
+    rotation: 0
+    state: enabled
+- name: pad_tail_note
+  id: note
+  parameters:
+    note: '"< 480 amostras: testa o MIN_GAP do sync_short (frames muito proximos)"'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 1180
+    - 1650
+    rotation: 0
+    state: enabled
+- name: encoding
+  id: variable_qtgui_chooser
+  parameters:
+    label: MCS do transmissor
+    type: int
+    num_opts: '0'
+    options: '[0, 1, 2, 3, 4, 5, 6, 7]'
+    labels: '["BPSK 1/2", "BPSK 3/4", "QPSK 1/2", "QPSK 3/4", "16QAM 1/2", "16QAM 3/4", "64QAM 2/3", "64QAM 3/4"]'
+    value: '0'
+    option0: '0'
+    label0: '""'
+    option1: '1'
+    label1: '""'
+    option2: '2'
+    label2: '""'
+    option3: '3'
+    label3: '""'
+    option4: '4'
+    label4: '""'
+    widget: combo_box
+    orient: Qt.QHBoxLayout
+    gui_hint: 1,1,1,1
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 700
+    - 1335
+    rotation: 0
+    state: enabled
+- name: msg_strobe
+  id: blocks_message_strobe
+  parameters:
+    msg: pmt.cons(pmt.PMT_NIL, pmt.init_u8vector(int(payload_len), [0x41]*int(payload_len)))
+    period: interval
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 380
+    - 40
+    rotation: 0
+    state: enabled
+- name: msg_strobe_note
+  id: note
+  parameters:
+    note: '"Payload de payload_len bytes a cada interval ms"'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 1180
+    - 1855
+    rotation: 0
+    state: enabled
+- name: mac_tx
+  id: ieee802_11_mac
+  parameters:
+    src_mac: '[0x23, 0x23, 0x23, 0x23, 0x23, 0x23]'
+    dst_mac: '[0x42, 0x42, 0x42, 0x42, 0x42, 0x42]'
+    bss_mac: '[0xff, 0xff, 0xff, 0xff, 0xff, 0xff]'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 760
+    - 40
+    rotation: 0
+    state: enabled
+- name: mac_tx_note
+  id: note
+  parameters:
+    note: '"MPDU: cabecalho MAC 24 B + payload + FCS (4 B)"'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 780
+    - 1855
+    rotation: 0
+    state: enabled
+- name: mapper
+  id: ieee802_11_mapper
+  parameters:
+    encoding: ieee802_11.Encoding(encoding)
+    debug: 'False'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 1140
+    - 40
+    rotation: 0
+    state: enabled
+- name: mapper_note
+  id: note
+  parameters:
+    note: '"PHY TX: scramble, FEC 1/2, puntura, interleaving, modulacao"'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 380
+    - 1855
+    rotation: 0
+    state: enabled
+- name: hdr_gen
+  id: digital_packet_headergenerator_bb
+  parameters:
+    header_formatter: ieee802_11.signal_field().formatter()
+    len_tag_key: '"packet_len"'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 1520
+    - 40
+    rotation: 0
+    state: enabled
+- name: hdr_gen_note
+  id: note
+  parameters:
+    note: '"Campo SIGNAL (24 bits, BPSK 1/2): RATE+LENGTH+paridade+tail"'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 380
+    - 2060
+    rotation: 0
+    state: enabled
+- name: c2s_hdr
+  id: digital_chunks_to_symbols_xx
+  parameters:
+    in_type: byte
+    out_type: complex
+    symbol_table: '[-1, 1]'
+    dimension: '1'
+    num_ports: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 1900
+    - 40
+    rotation: 0
+    state: enabled
+- name: c2s_hdr_note
+  id: note
+  parameters:
+    note: '"Mapeamento BPSK do SIGNAL"'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 780
+    - 2060
+    rotation: 0
+    state: enabled
+- name: c2s_payload
+  id: ieee802_11_chunks_to_symbols_xx
+  parameters: {}
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 2280
+    - 40
+    rotation: 0
+    state: enabled
+- name: c2s_payload_note
+  id: note
+  parameters:
+    note: '"Mapeia a MPDU nos 48 subportadores de dados"'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 1180
+    - 2060
+    rotation: 0
+    state: enabled
+- name: tsmux
+  id: blocks_tagged_stream_mux
+  parameters:
+    type: complex
+    ninputs: '2'
+    lengthtagname: '"packet_len"'
+    vlen: '1'
+    tag_preserve_head_pos: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 2660
+    - 40
+    rotation: 0
+    state: enabled
+- name: tsmux_note
+  id: note
+  parameters:
+    note: '"SIGNAL + dados numa tagged stream"'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 1180
+    - 2265
+    rotation: 0
+    state: enabled
+- name: alloc
+  id: digital_ofdm_carrier_allocator_cvc
+  parameters:
+    fft_len: '64'
+    occupied_carriers: (list(range(-26, -21)) + list(range(-20, -7)) + list(range(-6, 0)) + list(range(1, 7)) + list(range(8, 21)) + list(range(22, 27)),)
+    pilot_carriers: ((-21, -7, 7, 21),)
+    pilot_symbols: |-
+      ((1, 1, 1, -1),
+       (1, 1, 1, -1),
+       (1, 1, 1, -1),
+       (1, 1, 1, -1),
+       (-1, -1, -1, 1),
+       (-1, -1, -1, 1),
+       (-1, -1, -1, 1),
+       (1, 1, 1, -1),
+       (-1, -1, -1, 1),
+       (-1, -1, -1, 1),
+       (-1, -1, -1, 1),
+       (-1, -1, -1, 1),
+       (1, 1, 1, -1),
+       (1, 1, 1, -1),
+       (-1, -1, -1, 1),
+       (1, 1, 1, -1),
+       (-1, -1, -1, 1),
+       (-1, -1, -1, 1),
+       (1, 1, 1, -1),
+       (1, 1, 1, -1),
+       (-1, -1, -1, 1),
+       (1, 1, 1, -1),
+       (1, 1, 1, -1),
+       (-1, -1, -1, 1),
+       (1, 1, 1, -1),
+       (1, 1, 1, -1),
+       (1, 1, 1, -1),
+       (1, 1, 1, -1),
+       (1, 1, 1, -1),
+       (1, 1, 1, -1),
+       (-1, -1, -1, 1),
+       (1, 1, 1, -1),
+       (1, 1, 1, -1),
+       (1, 1, 1, -1),
+       (-1, -1, -1, 1),
+       (1, 1, 1, -1),
+       (1, 1, 1, -1),
+       (-1, -1, -1, 1),
+       (-1, -1, -1, 1),
+       (1, 1, 1, -1),
+       (1, 1, 1, -1),
+       (1, 1, 1, -1),
+       (-1, -1, -1, 1),
+       (1, 1, 1, -1),
+       (-1, -1, -1, 1),
+       (-1, -1, -1, 1),
+       (-1, -1, -1, 1),
+       (1, 1, 1, -1),
+       (-1, -1, -1, 1),
+       (1, 1, 1, -1),
+       (-1, -1, -1, 1),
+       (-1, -1, -1, 1),
+       (1, 1, 1, -1),
+       (-1, -1, -1, 1),
+       (-1, -1, -1, 1),
+       (1, 1, 1, -1),
+       (1, 1, 1, -1),
+       (1, 1, 1, -1),
+       (1, 1, 1, -1),
+       (1, 1, 1, -1),
+       (-1, -1, -1, 1),
+       (-1, -1, -1, 1),
+       (1, 1, 1, -1),
+       (1, 1, 1, -1),
+       (-1, -1, -1, 1),
+       (-1, -1, -1, 1),
+       (1, 1, 1, -1),
+       (-1, -1, -1, 1),
+       (1, 1, 1, -1),
+       (-1, -1, -1, 1),
+       (1, 1, 1, -1),
+       (1, 1, 1, -1),
+       (-1, -1, -1, 1),
+       (-1, -1, -1, 1),
+       (-1, -1, -1, 1),
+       (1, 1, 1, -1),
+       (1, 1, 1, -1),
+       (-1, -1, -1, 1),
+       (-1, -1, -1, 1),
+       (-1, -1, -1, 1),
+       (-1, -1, -1, 1),
+       (1, 1, 1, -1),
+       (-1, -1, -1, 1),
+       (-1, -1, -1, 1),
+       (1, 1, 1, -1),
+       (-1, -1, -1, 1),
+       (1, 1, 1, -1),
+       (1, 1, 1, -1),
+       (1, 1, 1, -1),
+       (1, 1, 1, -1),
+       (-1, -1, -1, 1),
+       (1, 1, 1, -1),
+       (-1, -1, -1, 1),
+       (1, 1, 1, -1),
+       (-1, -1, -1, 1),
+       (1, 1, 1, -1),
+       (-1, -1, -1, 1),
+       (-1, -1, -1, 1),
+       (-1, -1, -1, 1),
+       (-1, -1, -1, 1),
+       (-1, -1, -1, 1),
+       (1, 1, 1, -1),
+       (-1, -1, -1, 1),
+       (1, 1, 1, -1),
+       (1, 1, 1, -1),
+       (-1, -1, -1, 1),
+       (1, 1, 1, -1),
+       (-1, -1, -1, 1),
+       (1, 1, 1, -1),
+       (1, 1, 1, -1),
+       (1, 1, 1, -1),
+       (-1, -1, -1, 1),
+       (-1, -1, -1, 1),
+       (1, 1, 1, -1),
+       (-1, -1, -1, 1),
+       (-1, -1, -1, 1),
+       (-1, -1, -1, 1),
+       (1, 1, 1, -1),
+       (1, 1, 1, -1),
+       (1, 1, 1, -1),
+       (-1, -1, -1, 1),
+       (-1, -1, -1, 1),
+       (-1, -1, -1, 1),
+       (-1, -1, -1, 1),
+       (-1, -1, -1, 1),
+       (-1, -1, -1, 1),
+       (-1, -1, -1, 1))
+    sync_words: |-
+      ((0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        (1.4719601443879746+1.4719601443879746j),
+        0.0,
+        0.0,
+        0.0,
+        (-1.4719601443879746-1.4719601443879746j),
+        0.0,
+        0.0,
+        0.0,
+        (1.4719601443879746+1.4719601443879746j),
+        0.0,
+        0.0,
+        0.0,
+        (-1.4719601443879746-1.4719601443879746j),
+        0.0,
+        0.0,
+        0.0,
+        (-1.4719601443879746-1.4719601443879746j),
+        0.0,
+        0.0,
+        0.0,
+        (1.4719601443879746+1.4719601443879746j),
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        (-1.4719601443879746-1.4719601443879746j),
+        0.0,
+        0.0,
+        0.0,
+        (-1.4719601443879746-1.4719601443879746j),
+        0.0,
+        0.0,
+        0.0,
+        (1.4719601443879746+1.4719601443879746j),
+        0.0,
+        0.0,
+        0.0,
+        (1.4719601443879746+1.4719601443879746j),
+        0.0,
+        0.0,
+        0.0,
+        (1.4719601443879746+1.4719601443879746j),
+        0.0,
+        0.0,
+        0.0,
+        (1.4719601443879746+1.4719601443879746j),
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0),
+       (0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        (1.4719601443879746+1.4719601443879746j),
+        0.0,
+        0.0,
+        0.0,
+        (-1.4719601443879746-1.4719601443879746j),
+        0.0,
+        0.0,
+        0.0,
+        (1.4719601443879746+1.4719601443879746j),
+        0.0,
+        0.0,
+        0.0,
+        (-1.4719601443879746-1.4719601443879746j),
+        0.0,
+        0.0,
+        0.0,
+        (-1.4719601443879746-1.4719601443879746j),
+        0.0,
+        0.0,
+        0.0,
+        (1.4719601443879746+1.4719601443879746j),
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        (-1.4719601443879746-1.4719601443879746j),
+        0.0,
+        0.0,
+        0.0,
+        (-1.4719601443879746-1.4719601443879746j),
+        0.0,
+        0.0,
+        0.0,
+        (1.4719601443879746+1.4719601443879746j),
+        0.0,
+        0.0,
+        0.0,
+        (1.4719601443879746+1.4719601443879746j),
+        0.0,
+        0.0,
+        0.0,
+        (1.4719601443879746+1.4719601443879746j),
+        0.0,
+        0.0,
+        0.0,
+        (1.4719601443879746+1.4719601443879746j),
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0),
+       (0,
+        0j,
+        0,
+        0j,
+        0,
+        0j,
+        -1,
+        1j,
+        -1,
+        1j,
+        -1,
+        1j,
+        -1,
+        (-0-1j),
+        1,
+        1j,
+        1,
+        (-0-1j),
+        -1,
+        1j,
+        1,
+        1j,
+        1,
+        1j,
+        1,
+        1j,
+        -1,
+        -1j,
+        1,
+        (-0-1j),
+        -1,
+        1j,
+        0,
+        (-0-1j),
+        1,
+        -1j,
+        1,
+        (-0-1j),
+        1,
+        1j,
+        -1,
+        (-0-1j),
+        1,
+        -1j,
+        -1,
+        1j,
+        1,
+        1j,
+        1,
+        1j,
+        1,
+        1j,
+        -1,
+        (-0-1j),
+        1,
+        1j,
+        1,
+        (-0-1j),
+        -1,
+        0j,
+        0,
+        0j,
+        0,
+        0j),
+       (0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        -1,
+        -1,
+        1,
+        1,
+        -1,
+        1,
+        -1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        -1,
+        -1,
+        1,
+        1,
+        -1,
+        1,
+        -1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        -1,
+        -1,
+        1,
+        1,
+        -1,
+        1,
+        -1,
+        1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        1,
+        1,
+        -1,
+        -1,
+        1,
+        -1,
+        1,
+        -1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0))
+    len_tag_key: '"packet_len"'
+    output_is_shifted: 'True'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 3040
+    - 40
+    rotation: 0
+    state: enabled
+- name: alloc_note
+  id: note
+  parameters:
+    note: '"Pilotos + preambulo (STS/LTF) + 52 subportadores ocupados"'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 780
+    - 2265
+    rotation: 0
+    state: enabled
+- name: ifft
+  id: fft_vxx
+  parameters:
+    type: complex
+    fft_size: '64'
+    forward: 'False'
+    window: tuple([1/52**.5] * 64)
+    shift: 'True'
+    nthreads: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 3040
+    - 275
+    rotation: 0
+    state: enabled
+- name: ifft_note
+  id: note
+  parameters:
+    note: '"IFFT 64 pontos"'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 380
+    - 2265
+    rotation: 0
+    state: enabled
+- name: cp
+  id: digital_ofdm_cyclic_prefixer
+  parameters:
+    input_size: '64'
+    cp_len: '16'
+    rolloff: '2'
+    tagname: '"packet_len"'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 2660
+    - 275
+    rotation: 0
+    state: enabled
+- name: cp_note
+  id: note
+  parameters:
+    note: '"CP de 16 amostras: simbolo de 80 amostras (4 us)"'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 380
+    - 2470
+    rotation: 0
+    state: enabled
+- name: pad
+  id: foo_packet_pad2
+  parameters:
+    debug: 'False'
+    delay: 'False'
+    delay_sec: '0.001'
+    pad_front: '500'
+    pad_tail: int(pad_tail)
+    minoutbuf: '65536'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 2280
+    - 275
+    rotation: 0
+    state: enabled
+- name: pad_note
+  id: note
+  parameters:
+    note: '"Silencio antes/depois de cada frame"'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 780
+    - 2470
+    rotation: 0
+    state: enabled
+- name: gain_block
+  id: blocks_multiply_const_xx
+  parameters:
+    type: complex
+    const: gain
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 1900
+    - 275
+    rotation: 0
+    state: enabled
+- name: gain_block_note
+  id: note
+  parameters:
+    note: '"Ganho de recepcao aplicado ANTES do ruido"'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 1180
+    - 2470
+    rotation: 0
+    state: enabled
+- name: channel
+  id: channels_channel_model
+  parameters:
+    noise_voltage: noise
+    freq_offset: '0.0'
+    epsilon: '1.0'
+    taps: '[1.0]'
+    seed: '0'
+    block_tags: 'False'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 1520
+    - 275
+    rotation: 0
+    state: enabled
+- name: channel_note
+  id: note
+  parameters:
+    note: '"Canal AWGN (rad/amostra); no master ha CFO injetado"'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 1180
+    - 2675
+    rotation: 0
+    state: enabled
+- name: d16
+  id: blocks_delay
+  parameters:
+    type: complex
+    delay: '16'
+    num_ports: '1'
+    vlen: '1'
+    showports: 'False'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 1140
+    - 275
+    rotation: 0
+    state: enabled
+- name: d16_note
+  id: note
+  parameters:
+    note: '"s[n-16]: lag do STS (16 amostras = 0.8 us)"'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 780
+    - 2675
+    rotation: 0
+    state: enabled
+- name: conj
+  id: blocks_conjugate_cc
+  parameters: {}
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 760
+    - 275
+    rotation: 0
+    state: enabled
+- name: conj_note
+  id: note
+  parameters:
+    note: '"s*[n-16]"'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 380
+    - 2675
+    rotation: 0
+    state: enabled
+- name: mult
+  id: blocks_multiply_xx
+  parameters:
+    type: complex
+    num_inputs: '2'
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 380
+    - 275
+    rotation: 0
+    state: enabled
+- name: mult_note
+  id: note
+  parameters:
+    note: '"s[n] * s*[n-16]"'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 380
+    - 2880
+    rotation: 0
+    state: enabled
+- name: ma_c
+  id: blocks_moving_average_xx
+  parameters:
+    type: complex
+    length: int(nwin)
+    scale: '1'
+    max_iter: '4000'
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 380
+    - 510
+    rotation: 0
+    state: enabled
+- name: ma_c_note
+  id: note
+  parameters:
+    note: '"eq. (1): a[n], media movel de N_win coeficientes"'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 780
+    - 2880
+    rotation: 0
+    state: enabled
+- name: mag_c
+  id: blocks_complex_to_mag
+  parameters:
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 760
+    - 510
+    rotation: 0
+    state: enabled
+- name: mag_c_note
+  id: note
+  parameters:
+    note: '"|a[n]|"'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 1180
+    - 2880
+    rotation: 0
+    state: enabled
+- name: mag2
+  id: blocks_complex_to_mag_squared
+  parameters:
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 1140
+    - 510
+    rotation: 0
+    state: enabled
+- name: mag2_note
+  id: note
+  parameters:
+    note: '"|s[n]|^2"'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 1180
+    - 3085
+    rotation: 0
+    state: enabled
+- name: ma_p
+  id: blocks_moving_average_xx
+  parameters:
+    type: float
+    length: int(nwin) + 16
+    scale: '1'
+    max_iter: '4000'
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 1520
+    - 510
+    rotation: 0
+    state: enabled
+- name: ma_p_note
+  id: note
+  parameters:
+    note: '"eq. (2): potencia media em N_win+16 amostras"'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 780
+    - 3085
+    rotation: 0
+    state: enabled
+- name: div
+  id: blocks_divide_xx
+  parameters:
+    type: float
+    vlen: '1'
+    num_inputs: '2'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 1900
+    - 510
+    rotation: 0
+    state: enabled
+- name: div_note
+  id: note
+  parameters:
+    note: '"eq. (3): c[n] = |a[n]|/p[n]"'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 380
+    - 3085
+    rotation: 0
+    state: enabled
+- name: sink_c
+  id: qtgui_time_sink_x
+  parameters:
+    type: float
+    name: '"c[n] - correlacao normalizada"'
+    ylabel: '|a|/p'
+    yunit: '""'
+    size: '1024'
+    srate: samp_rate
+    grid: 'True'
+    autoscale: 'False'
+    ymin: '0'
+    ymax: '1.1'
+    nconnections: '1'
+    update_time: '0.10'
+    entags: 'True'
+    gui_hint: 2,0,1,2
+    tr_mode: qtgui.TRIG_MODE_AUTO
+    tr_slope: qtgui.TRIG_SLOPE_POS
+    tr_level: '0.5'
+    tr_delay: '0'
+    tr_chan: '0'
+    tr_tag: '""'
+    ctrlpanel: 'False'
+    legend: 'True'
+    axislabels: 'True'
+    stemplot: 'False'
+    label1: c[n]
+    width1: '1'
+    color1: blue
+    style1: '1'
+    marker1: '-1'
+    alpha1: '1.0'
+    label2: Signal 2
+    width2: '1'
+    color2: red
+    style2: '1'
+    marker2: '-1'
+    alpha2: '1.0'
+    label3: Signal 3
+    width3: '1'
+    color3: green
+    style3: '1'
+    marker3: '-1'
+    alpha3: '1.0'
+    label4: Signal 4
+    width4: '1'
+    color4: black
+    style4: '1'
+    marker4: '-1'
+    alpha4: '1.0'
+    label5: Signal 5
+    width5: '1'
+    color5: cyan
+    style5: '1'
+    marker5: '-1'
+    alpha5: '1.0'
+    label6: Signal 6
+    width6: '1'
+    color6: magenta
+    style6: '1'
+    marker6: '-1'
+    alpha6: '1.0'
+    label7: Signal 7
+    width7: '1'
+    color7: yellow
+    style7: '1'
+    marker7: '-1'
+    alpha7: '1.0'
+    label8: Signal 8
+    width8: '1'
+    color8: dark red
+    style8: '1'
+    marker8: '-1'
+    alpha8: '1.0'
+    label9: Signal 9
+    width9: '1'
+    color9: dark green
+    style9: '1'
+    marker9: '-1'
+    alpha9: '1.0'
+    label10: Signal 10
+    width10: '1'
+    color10: dark blue
+    style10: '1'
+    marker10: '-1'
+    alpha10: '1.0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 2280
+    - 510
+    rotation: 0
+    state: enabled
+- name: sink_p
+  id: qtgui_time_sink_x
+  parameters:
+    type: float
+    name: '"p[n] - potencia media"'
+    ylabel: p[n]
+    yunit: '""'
+    size: '512'
+    srate: samp_rate
+    grid: 'True'
+    autoscale: 'True'
+    ymin: '-1'
+    ymax: '1'
+    nconnections: '1'
+    update_time: '0.10'
+    entags: 'True'
+    gui_hint: 2,2,1,2
+    tr_mode: qtgui.TRIG_MODE_AUTO
+    tr_slope: qtgui.TRIG_SLOPE_POS
+    tr_level: '0.2'
+    tr_delay: '0'
+    tr_chan: '0'
+    tr_tag: '""'
+    ctrlpanel: 'False'
+    legend: 'True'
+    axislabels: 'True'
+    stemplot: 'False'
+    label1: p[n]
+    width1: '1'
+    color1: blue
+    style1: '1'
+    marker1: '-1'
+    alpha1: '1.0'
+    label2: Signal 2
+    width2: '1'
+    color2: red
+    style2: '1'
+    marker2: '-1'
+    alpha2: '1.0'
+    label3: Signal 3
+    width3: '1'
+    color3: green
+    style3: '1'
+    marker3: '-1'
+    alpha3: '1.0'
+    label4: Signal 4
+    width4: '1'
+    color4: black
+    style4: '1'
+    marker4: '-1'
+    alpha4: '1.0'
+    label5: Signal 5
+    width5: '1'
+    color5: cyan
+    style5: '1'
+    marker5: '-1'
+    alpha5: '1.0'
+    label6: Signal 6
+    width6: '1'
+    color6: magenta
+    style6: '1'
+    marker6: '-1'
+    alpha6: '1.0'
+    label7: Signal 7
+    width7: '1'
+    color7: yellow
+    style7: '1'
+    marker7: '-1'
+    alpha7: '1.0'
+    label8: Signal 8
+    width8: '1'
+    color8: dark red
+    style8: '1'
+    marker8: '-1'
+    alpha8: '1.0'
+    label9: Signal 9
+    width9: '1'
+    color9: dark green
+    style9: '1'
+    marker9: '-1'
+    alpha9: '1.0'
+    label10: Signal 10
+    width10: '1'
+    color10: dark blue
+    style10: '1'
+    marker10: '-1'
+    alpha10: '1.0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 2660
+    - 510
+    rotation: 0
+    state: enabled
+connections:
+- [msg_strobe, 'strobe', mac_tx, 'app in']
+- [mac_tx, 'phy out', mapper, 'in']
+- [mapper, '0', hdr_gen, '0']
+- [hdr_gen, '0', c2s_hdr, '0']
+- [mapper, '0', c2s_payload, '0']
+- [c2s_hdr, '0', tsmux, '0']
+- [c2s_payload, '0', tsmux, '1']
+- [tsmux, '0', alloc, '0']
+- [alloc, '0', ifft, '0']
+- [ifft, '0', cp, '0']
+- [cp, '0', pad, '0']
+- [pad, '0', gain_block, '0']
+- [gain_block, '0', channel, '0']
+- [channel, '0', d16, '0']
+- [d16, '0', conj, '0']
+- [conj, '0', mult, '1']
+- [channel, '0', mult, '0']
+- [mult, '0', ma_c, '0']
+- [ma_c, '0', mag_c, '0']
+- [channel, '0', mag2, '0']
+- [mag2, '0', ma_p, '0']
+- [mag_c, '0', div, '0']
+- [ma_p, '0', div, '1']
+- [div, '0', sink_c, '0']
+- [ma_p, '0', sink_p, '0']
+
+metadata:
+  file_format: 1
+  grc_version: 3.10.12.0
